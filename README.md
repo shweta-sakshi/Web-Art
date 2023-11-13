@@ -1,2 +1,0 @@
-# Web-Art
-Codesangam team
