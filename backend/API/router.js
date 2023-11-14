@@ -6,14 +6,6 @@ const authenticate = require("../middleware/authenticate");
 
 
 //for user registration
-
-/*[CRUD]    [HTTP]
-  Create	POST, PUT if we have `id` or `uuid`
-  Read	    GET
-  Update	PUT to replace, PATCH to modify
-  Delete	DELETE
-*/
-
 router.post("/register", async(req,res)=>{
 
     const {fname,email,password,cpassword} = req.body
@@ -55,7 +47,6 @@ router.post("/register", async(req,res)=>{
 
 
 //for user Login
-
 router.post("/login", async(req,res)=>{
     //console.log(req.body);
     
@@ -104,6 +95,7 @@ router.post("/login", async(req,res)=>{
     }
 })
 
+
 //user valid
 router.get("/validuser",authenticate, async(req,res)=>{
     try{
@@ -114,6 +106,7 @@ router.get("/validuser",authenticate, async(req,res)=>{
         res.status(401).json({status:401,err});
     }
 });
+
 
 //user logout
 //if user doesn't have token then we can't logout them

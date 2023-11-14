@@ -59,7 +59,6 @@ userSchema.pre("save", async function(next){
 
 
 //Token generator
-
 userSchema.methods.generateAuthtoken = async function(){/* add generateAuthtoken method to usrSchema */
    try{
       //create JWT for authentication

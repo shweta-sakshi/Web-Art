@@ -18,7 +18,6 @@ const Register = () => {
 
 
     const setVal = (e) => {
-        // console.log(e.target.value);
         const { name, value } = e.target;
 
         setInpval(() => {
@@ -29,6 +28,7 @@ const Register = () => {
         })
     };
 
+    //function call when user click on register button.
     const addUserdata = async (e) => {
         e.preventDefault();
 
@@ -68,8 +68,7 @@ const Register = () => {
                 position: "top-center"
             });
         } else {
-            // console.log("user registration succesfully done");
-
+            //everything is checked and user data will be transfer to backend database.
 
             const data = await fetch("/register", {
                 method: "POST",
@@ -82,7 +81,6 @@ const Register = () => {
             });
 
             const res = await data.json();
-            // console.log(res.status);
 
             if (res.status === 201) {
                 toast.success("Registration Successfully done 😃!", {

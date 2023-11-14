@@ -26,6 +26,7 @@ const Login = () => {
     })
   };
 
+  //function call when user hit the login button
   const loginUser = async(e) =>{
        e.preventDefault();
 
@@ -49,6 +50,7 @@ const Login = () => {
         });
     }else{
 
+        //user credential will be check with database.
         const data = await fetch("/login", {
                 method: "POST",
                 headers: {
@@ -60,7 +62,6 @@ const Login = () => {
             });
 
             const res = await data.json();
-            // console.log(res);
 
             if (res.status === 201) {
                 localStorage.setItem("usersdatatoken",res.result.token);

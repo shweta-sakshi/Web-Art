@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoginContext } from './contexProvider/context';
 import CircularProgress from '@mui/material/CircularProgress';
+import "./Dashboard.css";
 import Box from '@mui/material/Box';
 
 const Dashboard = () => {
@@ -51,9 +52,20 @@ const Dashboard = () => {
         <>
             {
                 data ?
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                        <img src="https://images.vexels.com/content/78703/preview/man-and-woman-shaking-hands-72d900.png" style={{ width: "200px", marginTop: 20 }} alt="user" />
-                        <h1>Welcome To Infinity {logindata ? logindata.ValidUserOne.fname : ""}</h1>
+                    <div className="post-container">
+                        <div className="user-info">
+                            <img src="https://cdn-icons-png.flaticon.com/128/7009/7009609.png?ga=GA1.1.2046960427.1678348423&track=ais"
+                                 alt="User Profile" className="user-profile-picture" />
+                            <div className="user-username">{logindata ? logindata.ValidUserOne.fname : ""}</div>
+                        </div>
+                        <div className="post-content">
+                            <input type="email" placeholder='Something in mind... Share it' />
+                        </div>
+                        <div className="post-interactions">
+                            <div className="interaction-option">Like</div>
+                            <div className="interaction-option">Comment</div>
+                            <div className="interaction-option">Share</div>
+                        </div>
                     </div> : <Box sx={{ display: 'flex', margin:"45%", justifycontent: "center", alignItems: "center", height: "100vh" }}>
                         Loading... &nbsp;
                         <CircularProgress />

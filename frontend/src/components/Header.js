@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, { useContext, useState } from 'react'
 import Avatar from '@mui/material/Avatar'
 import './header.css'
 import { LoginContext } from './contexProvider/context';
@@ -35,7 +35,7 @@ const Header = () => {
       {
         "Content-Type": "application/json",
         "Authorization": token,
-        Accept:"application/json"
+        Accept: "application/json"
       },
       credentials: "include"
     });
@@ -67,7 +67,7 @@ const Header = () => {
       <header>
         <nav>
 
-        <NavLink to="/"><h1>Infinity Link</h1></NavLink>
+          <NavLink to="/"><h1>Infinity Link</h1></NavLink>
           <div className='avtar'>
             {
               logindata?.ValidUserOne ? <Avatar style={{ background: "salmon", fontWeight: "bold", textTransform: "capitalize" }} onClick={handleClick}>{logindata?.ValidUserOne.fname[0].toUpperCase()}</Avatar> :
@@ -82,11 +82,11 @@ const Header = () => {
             open={open}
             onClose={handleClose}
             MenuListProps={{
-                'aria-labelledby': 'basic-button',
+              'aria-labelledby': 'basic-button',
             }}
           >
             {logindata?.ValidUserOne ? (
-              <>
+              <div>
                 <MenuItem onClick={() => {
                   goDash();
                   handleClose();
@@ -95,12 +95,14 @@ const Header = () => {
                   logoutuser();
                   handleClose();
                 }}>Logout</MenuItem>
-              </>
+              </div>
             ) : (
-              <MenuItem onClick={() => {
-                goError();
-                handleClose();
-              }}>Profile</MenuItem>
+              <div>
+                <MenuItem onClick={() => {
+                  goError();
+                  handleClose();
+                }}>Profile</MenuItem>
+              </div>
             )}
           </Menu>
         </nav>
