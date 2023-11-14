@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Link-User Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="01Style.css">
+</head>
+
+<style>
+      #profile{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }  
+        .profile-img {
+          width: 60%;
+          height: 240px;
+        }
+        .profile-img input{
+          width: 50%;
+          height: 220px;
+        }
+        
+</style>
+
+<body>
+    
+    <div id="profile" class="row g-5 gradient-background">
+      <header class="p-3 text-bg-dark">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-1 mb-lg-0 text-white text-decoration-none">
+              <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-infinity " viewBox="0 0 16 16">
+                <path d="M5.68 5.792 7.345 7.75 5.681 9.708a2.75 2.75 0 1 1 0-3.916ZM8 6.978 6.416 5.113l-.014-.015a3.75 3.75 0 1 0 0 5.304l.014-.015L8 8.522l1.584 1.865.014.015a3.75 3.75 0 1 0 0-5.304l-.014.015L8 6.978Zm.656.772 1.663-1.958a2.75 2.75 0 1 1 0 3.916L8.656 7.75Z"/>
+              </svg>
+                <img src="logo.png" alt="" width="150" height="40">
+            </a>
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="#" class="nav-link px-2 text-white">Home</a></li>
+              <li><a href="#" class="nav-link px-2 text-white">My Network</a></li>
+              <li><a href="#" class="nav-link px-2 text-secondary">Profile</a></li>
+              <li><a href="#" class="nav-link px-2 text-white">Notification</a></li>
+              <li><a href="#" class="nav-link px-2 text-white">Jobs</a></li>
+            </ul>
+    
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+              <input type="search" class="form-control form-control-dark text-bg-light" placeholder="Search Profile" aria-label="Search">
+            </form>
+    
+            <div class="text-end">
+              <button type="button" class="btn btn-outline-light me-2">Log Out</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+       
+        <div class="col-md-7 col-lg-8">
+          <form class="needs-validation" novalidate="">
+            <div class="row g-3">
+
+              <div class="profile-img">
+                <label for="profile" class="form-label">Profile Picture<span class="text-body-secondary" >(Optional)</span></label>
+                <input type="image" class="form-control"  fdprocessedid="hiekzo" >
+              </div><br>
+
+              <div class="col-sm-6">
+                <label for="firstName" class="form-label">First name</label>
+                <input type="text" class="form-control" id="firstName" placeholder="" value="" required="" fdprocessedid="6l0l">
+                <div class="invalid-feedback">
+                  Valid first name is required.
+                </div>
+              </div>
+  
+              <div class="col-sm-6">
+                <label for="lastName" class="form-label">Last name</label>
+                <input type="text" class="form-control" id="lastName" placeholder="" value="" required="" fdprocessedid="y0b2fc">
+                <div class="invalid-feedback">
+                  Valid last name is required.
+                </div>
+              </div>
+  
+              <div class="col-12">
+                <label for="username" class="form-label">Username</label>
+                <div class="input-group has-validation">
+                  <span class="input-group-text">@</span>
+                  <input type="text" class="form-control" id="username" placeholder="Username" required="" fdprocessedid="gg08nh">
+                <div class="invalid-feedback">
+                    Your username is required.
+                  </div>
+                </div>
+              </div>
+  
+              <div class="col-12">
+                <label for="email" class="form-label">Email <span class="text-body-secondary">(Optional)</span></label>
+                <input type="email" class="form-control" id="email" placeholder="you@example.com" fdprocessedid="hiekzo">
+                <div class="invalid-feedback">
+                  Please enter a valid email address for shipping updates.
+                </div>
+              </div>
+  
+              <div class="col-12">
+                <label for="Number" class="form-label">Contact Number</label>
+                <input type="number" class="form-control" id="Number" placeholder="98******76" required="" fdprocessedid="wgk5dq">
+                <div class="invalid-feedback">
+                  Please enter your valid contact number
+                </div>
+              </div>
+  
+              <div class="col-12">
+                <label for="job" class="form-label">Type of job you are interest <span class="text-body-secondary"></span></label>
+                <input type="text" class="form-control" id="job" placeholder="Enter job that suits you best" fdprocessedid="ohexoo">
+              </div>
+  
+              <div class="col-md-5">
+                <label for="country" class="form-label">Country</label>
+                <select class="form-select" id="country" required="" fdprocessedid="0vzahg">
+                  <option value="">Choose...</option>
+                  <option>United States</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please select a valid country.
+                </div>
+              </div>
+  
+              <div class="col-md-4">
+                <label for="state" class="form-label">State</label>
+                <select class="form-select" id="state" required="" fdprocessedid="q3ebjo">
+                  <option value="">Choose...</option>
+                  <option>California</option>
+                </select>
+                <div class="invalid-feedback">
+                  Please provide a valid state.
+                </div>
+              </div>
+  
+              <div class="col-md-3">
+                <label for="zip" class="form-label">Pin Code</label>
+                <input type="number" class="form-control" id="zip" placeholder="22****7" required="" fdprocessedid="qy0hai">
+                <div class="invalid-feedback">
+                  Zip code required.
+                </div>
+              </div>
+            </div>
+  
+            <hr class="my-4">
+  
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="save-info">
+              <label class="form-check-label" for="save-info">Save this information for next time</label>
+            </div>
+  
+            <hr class="my-4">
+  
+  
+            <button class="w-100 btn btn-dark btn-lg m-2" type="reset" fdprocessedid="xcb70n">Reset</button>
+            <button class="w-100 btn btn-dark btn-lg m-2 mb-4" type="submit" fdprocessedid="xcb70n">Submit</button>
+          </form>
+        </div>
+      </div>
+
+</body>
+</html>

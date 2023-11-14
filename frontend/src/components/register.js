@@ -89,6 +89,10 @@ const Register = () => {
                     position: "top-center"
                 });
                 setInpval({ ...inpval, fname: "", email: "", password: "", cpassword: "" });
+            }else{
+                toast.error("User Already Exist", {
+                    position: "top-center"
+                });
             }
         }
     }

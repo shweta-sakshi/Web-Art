@@ -53,8 +53,8 @@ const Dashboard = () => {
                 data ?
                     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <img src="https://images.vexels.com/content/78703/preview/man-and-woman-shaking-hands-72d900.png" style={{ width: "200px", marginTop: 20 }} alt="user" />
-                        <h1>User Email:{logindata ? logindata.ValidUserOne.email : ""}</h1>
-                    </div> : <Box sx={{ display: 'flex', justifycontent: "center", alignItems: "center", height: "100vh" }}>
+                        <h1>Welcome To Infinity {logindata ? logindata.ValidUserOne.fname : ""}</h1>
+                    </div> : <Box sx={{ display: 'flex', margin:"45%", justifycontent: "center", alignItems: "center", height: "100vh" }}>
                         Loading... &nbsp;
                         <CircularProgress />
                     </Box>

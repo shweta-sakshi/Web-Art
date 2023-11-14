@@ -62,7 +62,7 @@ function App() {
               <Route path='*' element={<Error />} />
             </Routes>
           </>
-        ): <Box sx={{ display: 'flex', justifycontent: "center", alignItems: "center", height: "100vh" }}>
+        ): <Box sx={{ display: 'flex', margin:"45%", justifycontent: "center", alignItems: "center", height: "100vh" }}>
               Loading... &nbsp;
               <CircularProgress />
            </Box>

@@ -66,6 +66,10 @@ const Login = () => {
                 localStorage.setItem("usersdatatoken",res.result.token);
                 history("/dash");
                 setInpval({ ...inpval, email: "", password: ""});
+            }else{
+                toast.error("Invalid Credential", {
+                    position: "top-center"
+                });
             }
     }
   }
