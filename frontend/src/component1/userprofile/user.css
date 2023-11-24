@@ -1,0 +1,13 @@
+#profile{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}  
+.profile-img {
+  width: 60%;
+  height: 240px;
+}
+.profile-img input{
+  width: 50%;
+  height: 220px;
+}
