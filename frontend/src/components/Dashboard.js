@@ -30,11 +30,8 @@ const Dashboard = () => {
         });
 
         const data = await res.json();
-
-        //console.log(`check, ${data}`);
-
-        if (data.status === 401 || !data) {
-            history("*");
+        if (data.status === 401 || data === null) {
+            history("");
         } else {
             setLoginData(data);
             history("/dash");
@@ -55,18 +52,18 @@ const Dashboard = () => {
                     <div className="post-container">
                         <div className="user-info">
                             <img src="https://cdn-icons-png.flaticon.com/128/7009/7009609.png?ga=GA1.1.2046960427.1678348423&track=ais"
-                                 alt="User Profile" className="user-profile-picture" />
+                                alt="User Profile" className="user-profile-picture" />
                             <div className="user-username">{logindata ? logindata.ValidUserOne.fname : ""}</div>
                         </div>
                         <div className="post-content">
-                            <input type="email" placeholder='Something in mind... Share it' />
+                            <input type="text" placeholder='Something in mind... Share it' />
                         </div>
                         <div className="post-interactions">
                             <div className="interaction-option">Like</div>
                             <div className="interaction-option">Comment</div>
                             <div className="interaction-option">Share</div>
                         </div>
-                    </div> : <Box sx={{ display: 'flex', margin:"45%", justifycontent: "center", alignItems: "center", height: "100vh" }}>
+                    </div> : <Box sx={{ display: 'flex', margin: "45%", justifycontent: "center", alignItems: "center", height: "100vh" }}>
                         Loading... &nbsp;
                         <CircularProgress />
                     </Box>

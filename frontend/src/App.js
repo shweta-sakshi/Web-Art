@@ -2,6 +2,7 @@ import Header from './components/Header.js';
 import Login from './components/Login.js';
 import Register from "./components/register.js";
 import Dashboard from "./components/Dashboard.js";
+import Post from "./components/Post.js";
 import Error from "./components/error.js";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -59,13 +60,14 @@ function App() {
               <Route path='/' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/dash' element={<Dashboard />} />
+              <Route path='/createpost' element={<Post />} />
               <Route path='*' element={<Error />} />
             </Routes>
           </>
-        ): <Box sx={{ display: 'flex', margin:"45%", justifycontent: "center", alignItems: "center", height: "100vh" }}>
-              Loading... &nbsp;
-              <CircularProgress />
-           </Box>
+        ) : <Box sx={{ display: 'flex', margin: "45%", justifycontent: "center", alignItems: "center", height: "100vh" }}>
+          Loading... &nbsp;
+          <CircularProgress />
+        </Box>
       }
     </>
   );

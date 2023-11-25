@@ -21,49 +21,49 @@
     border-bottom: 1px solid #eee;
 }
 
-.post-content input{
+.post-content input {
     max-width: 580px;
 }
 
-    .post-content input:focus {
-        border: 2px solid rgba(66, 153, 225, 0.6);
-    }
+.post-content input:focus {
+    border: 2px solid rgba(66, 153, 225, 0.6);
+}
 
 
-    .post-content input::placeholder {
-        color: #8694a8;
-        letter-spacing: .5px;
-        font-size: 14px;
-    }
+.post-content input::placeholder {
+    color: #8694a8;
+    letter-spacing: .5px;
+    font-size: 14px;
+}
 
-    .user-profile-picture {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-right: 10px;
-    }
+.user-profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
 
-    .user-username {
-        font-weight: bold;
-    }
+.user-username {
+    font-weight: bold;
+}
 
-    .post-content {
-        padding: 10px;
-    }
+.post-content {
+    padding: 10px;
+}
 
-    .post-interactions {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px;
-        border-top: 1px solid #eee;
-    }
+.post-interactions {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-top: 1px solid #eee;
+}
 
-    .interaction-option {
-        cursor: pointer;
-        color: #555;
-    }
+.interaction-option {
+    cursor: pointer;
+    color: #555;
+}
 
-    .interaction-option:hover {
-        color: #007bff;
-    }
+.interaction-option:hover {
+    color: #007bff;
+}

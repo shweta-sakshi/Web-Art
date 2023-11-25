@@ -6,7 +6,6 @@ const authenticate = require("../middleware/authenticate");
 //to get all the posts of user.
 router.get("/allPost", (req,res)=>{
     Post.find()
-
     //to expand the postedBy field in post and fetch the mentioned or all the info inside.
     .populate("postedBy","_id fname email")
     .populate("comments.postedBy","_id fname")
@@ -16,6 +15,21 @@ router.get("/allPost", (req,res)=>{
     .catch(err=>{
         console.log(err);
     })
+})
+
+//get post of followed user.
+router.get("/allPost", (req, res) => {
+    //if postedBy is in the following list then return that post.
+    Post.find({postedBy:{$in:req.user.following}})
+        //to expand the postedBy field in post and fetch the mentioned or all the info inside.
+        .populate("postedBy", "_id fname email")
+        .populate("comments.postedBy", "_id fname")
+        .then(posts => {
+            res.json({ posts });
+        })
+        .catch(err => {
+            console.log(err);
+        })
 })
 
 //to create user post.

@@ -4,10 +4,9 @@ import './header.css'
 import { LoginContext } from './contexProvider/context';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { useNavigate, NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const Header = () => {
-
   const { logindata, setLoginData } = useContext(LoginContext);
 
   const history = useNavigate();
@@ -20,7 +19,6 @@ const Header = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
 
   //user logout function
   const logoutuser = async () => {
@@ -58,6 +56,10 @@ const Header = () => {
     history("/dash");
   }
 
+  const Createpost = () => {
+    history("/createpost");
+  }
+
   const goError = () => {
     history("*");
   }
@@ -67,7 +69,7 @@ const Header = () => {
       <header>
         <nav>
 
-          <NavLink to="/"><h1>Infinity Link</h1></NavLink>
+          <NavLink to="/login"><h1>Infinity Link</h1></NavLink>
           <div className='avtar'>
             {
               logindata?.ValidUserOne ? <Avatar style={{ background: "salmon", fontWeight: "bold", textTransform: "capitalize" }} onClick={handleClick}>{logindata?.ValidUserOne.fname[0].toUpperCase()}</Avatar> :
@@ -91,6 +93,10 @@ const Header = () => {
                   goDash();
                   handleClose();
                 }}>Profile</MenuItem>
+                <MenuItem onClick={() => {
+                  Createpost();
+                  handleClose();
+                }}>Create</MenuItem>
                 <MenuItem onClick={() => {
                   logoutuser();
                   handleClose();
