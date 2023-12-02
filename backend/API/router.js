@@ -41,10 +41,9 @@ router.post("/register", async (req, res) => {
 
     } catch (err) {
         res.status(422).json(err);
-        console.log("catch block error");
+        console.log("catch error while registre");
     }
 });
-
 
 //for user Login
 router.post("/login", async (req, res) => {
@@ -90,10 +89,9 @@ router.post("/login", async (req, res) => {
         }
     } catch (err) {
         res.status(401).json(err);
-        console.log("catch error");
+        console.log("catch error while login");
     }
 })
-
 
 //user valid
 router.get("/validuser", authenticate, async (req, res) => {
@@ -106,7 +104,6 @@ router.get("/validuser", authenticate, async (req, res) => {
     }
 });
 
-
 //user logout
 //if user doesn't have token then we can't logout them
 router.get("/logout", authenticate, async (req, res) => {
@@ -118,14 +115,21 @@ router.get("/logout", authenticate, async (req, res) => {
         });
 
         //clear cookie
-        res.clearCookie("usercookie", { path: "/" });
+        const cookies = Object.keys(req.cookies);
+        cookies.forEach(cookie => {
+            res.clearCookie(cookie, { path: "/" });
+        });
 
-        await req.rootUser.save();
+        try {
+            await req.rootUser.save();
+        } catch (error) {
+            console.log("error while logout");
+        }
 
         res.status(201).json({ status: 201 });
 
     } catch (error) {
-        res.status(401).json({ status: 201, error });
+        res.status(401).json({ status: 401, error });
     }
 });
 

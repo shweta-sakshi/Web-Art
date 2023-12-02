@@ -4,6 +4,7 @@ import { LoginContext } from './contexProvider/context';
 import CircularProgress from '@mui/material/CircularProgress';
 import "./Dashboard.css";
 import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
 
 const Dashboard = () => {
 
@@ -56,7 +57,8 @@ const Dashboard = () => {
                             <div className="user-username">{logindata ? logindata.ValidUserOne.fname : ""}</div>
                         </div>
                         <div className="post-content">
-                            <input type="text" placeholder='Something in mind... Share it' />
+                            {/* <input type="text" placeholder='Something in mind... Share it' /> */}
+                            {/* <TextField id="standard-basic" label="Something in mind... Share it" variant="standard" /> */}
                         </div>
                         <div className="post-interactions">
                             <div className="interaction-option">Like</div>

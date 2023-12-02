@@ -40,17 +40,16 @@ const Header = () => {
 
     const data = await res.json("");
 
-    if (data.status !== 201) {
+    if (data.status === 201) {
       //delete token form local storage.
       console.log("user Logout")
       localStorage.removeItem("userdatatoken");
       setLoginData(false);
       history("/");
     } else {
-      console.log("Error");
+      console.log("Error while logout");
     }
   }
-
 
   const goDash = () => {
     history("/dash");
@@ -69,7 +68,7 @@ const Header = () => {
       <header>
         <nav>
 
-          <NavLink to="/login"><h1>Infinity Link</h1></NavLink>
+          <NavLink to="/"><h1>Infinity Link</h1></NavLink>
           <div className='avtar'>
             {
               logindata?.ValidUserOne ? <Avatar style={{ background: "salmon", fontWeight: "bold", textTransform: "capitalize" }} onClick={handleClick}>{logindata?.ValidUserOne.fname[0].toUpperCase()}</Avatar> :
@@ -96,7 +95,7 @@ const Header = () => {
                 <MenuItem onClick={() => {
                   Createpost();
                   handleClose();
-                }}>Create</MenuItem>
+                }}>Create Post</MenuItem>
                 <MenuItem onClick={() => {
                   logoutuser();
                   handleClose();
