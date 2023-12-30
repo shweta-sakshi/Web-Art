@@ -1,143 +1,144 @@
-import React, { useEffect, useState } from "react";
-//import * as React from 'react';
-import Button from '@mui/material/Button';
-import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom'
+import * as React from 'react';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-//for uploadig image UI.
-import { styled } from '@mui/material/styles';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
+//for steps.
+const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+
+const style = {
   position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
-
-const Post = () => {
-
-  const history = useNavigate();
-
-  const [title, setTitle] = useState("")
-  const [body, setBody] = useState("")
-  const [image, setImage] = useState(null)
-  const [url, setUrl] = useState("")
-
-  useEffect(() => {
-    if (url) {
-      fetch("/createpost", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": localStorage.getItem("jwt")
-        },
-        body: JSON.stringify({
-          title,
-          body,
-          pic: url
-        })
-      }).then(res => res.json())
-        .then(data => {
-
-          if (data.error) {
-            toast.error("Ensure ", {
-              position: "top-center"
-            });
-          }
-          else {
-            toast.error("Posted successfully", {
-              position: "top-center"
-            });
-            history('/')
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-    }
-  }, [url, title, body, history])
-
-
-
-  const postDetails = () => {
-    const data = new FormData()
-    data.append("file", image)
-    data.append("upload_preset", "Infinity-Link")
-    data.append("cloud_name", "dtfxyzdyy")
-    fetch("https://api.cloudinary.com/v1_1/dtfxyzdyy/Infinity-Link/upload", {
-      method: "post",
-      body: data
-    })
-      .then(res => res.json())
-      .then(data => {
-        setUrl(data.url)
-      })
-      .catch(err => {
-        console.log("error while uploading image");
-      })
-
-  }
-
-  return (
-    <>
-        <div 
-          style={{
-            margin: "30px auto",
-            maxWidth: "500px",
-            padding: "20px",
-            textAlign: "center"
-          }}
-        >
-          {/* <input
-          type="text"
-          placeholder="body"
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
-        />
-        <div className="file-field input-field">
-          <div className="btn #64b5f6 blue darken-1">
-            <span>Uplaod Image</span>
-            <input type="file" onChange={(e) => setImage(e.target.files[0])} />
-          </div>
-          <div className="file-path-wrapper">
-            <input className="file-path validate" type="text" />
-          </div>
-        </div> */}
-          <Box
-            component="form"
-            sx={{
-              '& > :not(style)': { m: 0.5, width: '35ch' },
-            }}
-            noValidate
-            autoComplete="off"
-          >
-            <TextField id="standard-basic" label="title" variant="standard" />
-            <TextField id="standard-basic" label="body" variant="standard" />
-            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-              Upload file
-              <VisuallyHiddenInput type="file" />
-            </Button>
-          </Box>
-          <Button variant="contained"
-            onClick={() => {
-              postDetails()
-              setTitle("")
-              setBody("")
-              setImage(null)
-              setUrl("")
-            }}
-          >
-            Submit post
-          </Button>
-        </div>
-    </>
-  );
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 800,
+  bgcolor: 'lightblue',
+  border: 'none',
+  boxShadow: 24,
+  p: 18,
 };
 
-export default Post;
+export default function Post() {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  //for step.
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [skipped, setSkipped] = React.useState(new Set());
+
+  const isStepOptional = (step) => {
+    return step === 1;
+  };
+
+  const isStepSkipped = (step) => {
+    return skipped.has(step);
+  };
+
+  const handleNext = () => {
+    let newSkipped = skipped;
+    if (isStepSkipped(activeStep)) {
+      newSkipped = new Set(newSkipped.values());
+      newSkipped.delete(activeStep);
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped(newSkipped);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleSkip = () => {
+    if (!isStepOptional(activeStep)) {
+      // You probably want to guard against something like this,
+      // it should never occur unless someone's actively trying to break something.
+      throw new Error("You can't skip a step that isn't optional.");
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values());
+      newSkipped.add(activeStep);
+      return newSkipped;
+    });
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+  };
+
+  return (
+    <div>
+      <Button onClick={handleOpen}>Open modal</Button>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Stepper activeStep={activeStep}>
+            {steps.map((label, index) => {
+              const stepProps = {};
+              const labelProps = {};
+              if (isStepOptional(index)) {
+                labelProps.optional = (
+                  <Typography variant="caption">Optional</Typography>
+                );
+              }
+              if (isStepSkipped(index)) {
+                stepProps.completed = false;
+              }
+              return (
+                <Step key={label} {...stepProps}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
+          {activeStep === steps.length ? (
+            <React.Fragment>
+              <Typography sx={{ mt: 2, mb: 1 }}>
+                All steps completed - you&apos;re finished
+              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                <Box sx={{ flex: '1 1 auto' }} />
+                <Button onClick={handleReset}>Reset</Button>
+              </Box>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                <Button
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  Back
+                </Button>
+                <Box sx={{ flex: '1 1 auto' }} />
+                {isStepOptional(activeStep) && (
+                  <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                    Skip
+                  </Button>
+                )}
+
+                <Button onClick={handleNext}>
+                  {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                </Button>
+              </Box>
+            </React.Fragment>
+          )}
+        </Box>
+      </Modal>
+    </div>
+  );
+}

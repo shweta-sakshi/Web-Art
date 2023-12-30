@@ -2,7 +2,7 @@
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
+    color: #f5f4a2;
 }
 
 .post-container {
@@ -66,4 +66,8 @@
 
 .interaction-option:hover {
     color: #007bff;
+}
+
+.post-card {
+    align-items: center;
 }

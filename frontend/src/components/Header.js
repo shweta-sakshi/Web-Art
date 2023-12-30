@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import Avatar from '@mui/material/Avatar'
 import './header.css'
-import { LoginContext } from './contexProvider/context';
+import { LoginContext } from './contexProvider/Context';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -13,9 +13,11 @@ const Header = () => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -74,7 +76,6 @@ const Header = () => {
               logindata?.ValidUserOne ? <Avatar style={{ background: "salmon", fontWeight: "bold", textTransform: "capitalize" }} onClick={handleClick}>{logindata?.ValidUserOne.fname[0].toUpperCase()}</Avatar> :
                 <Avatar style={{ background: "blue" }} onClick={handleClick} />
             }
-
           </div>
 
           <Menu
