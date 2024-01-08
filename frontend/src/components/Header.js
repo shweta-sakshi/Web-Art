@@ -17,7 +17,7 @@ const Header = () => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -70,11 +70,11 @@ const Header = () => {
       <header>
         <nav>
 
-          <NavLink to="/"><h1>Infinity Link</h1></NavLink>
+          <NavLink to="/" style={{ color: "white" }}><h1>Infinity Link</h1></NavLink>
           <div className='avtar'>
             {
               logindata?.ValidUserOne ? <Avatar style={{ background: "salmon", fontWeight: "bold", textTransform: "capitalize" }} onClick={handleClick}>{logindata?.ValidUserOne.fname[0].toUpperCase()}</Avatar> :
-                <Avatar style={{ background: "blue" }} onClick={handleClick} />
+                <Avatar style={{ background: "#02367B" }} onClick={handleClick} />
             }
           </div>
 

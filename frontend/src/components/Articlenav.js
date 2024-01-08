@@ -22,10 +22,28 @@ import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-// import { NavLink, useNavigate } from 'react-router-dom';
+//button
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+//style
+// import FormatBoldIcon from '@mui/icons-material/FormatBold';
+// import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+// import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
+// import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
+// import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+// import ToggleButton from '@mui/material/ToggleButton';
+// import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+
+//Button custom style
+const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#000"),
+    backgroundColor: "#02367B",
+    '&:hover': {
+        backgroundColor: "#006CA5",
+    },
+}));
 
 const options = [
     'Show some love to MUI',
@@ -108,7 +126,7 @@ const Articlenav = () => {
                             onClick={handleClickListItem}
                         >
                             {logindata?.ValidUserOne ? <Avatar style={{ background: "salmon", marginRight: "10px", fontWeight: "bold", textTransform: "capitalize" }}>{logindata?.ValidUserOne.fname[0].toUpperCase()}</Avatar> :
-                                <Avatar style={{ marginRight: "10px", background: "blue" }} />}
+                                <Avatar style={{ marginRight: "10px", background: "#02367B" }} />}
                             <ListItemText
                                 primary={logindata?.ValidUserOne ? (logindata?.ValidUserOne.fname) : ("")}
                                 secondary={"individual article"}
@@ -156,6 +174,18 @@ const Articlenav = () => {
                             },
                         }}
                     >
+                        {/* <ToggleButtonGroup
+                            value={formats}
+                            onChange={handleFormat}
+                            aria-label="text formatting"
+                        >
+                            <ToggleButton value="bold" aria-label="bold">
+                                <FormatBoldIcon />
+                            </ToggleButton>
+                            <ToggleButton value="italic" aria-label="italic">
+                                <FormatItalicIcon />
+                            </ToggleButton>
+                        </ToggleButtonGroup> */}
                         
                         <FormatBoldIcon />
                         <FormatItalicIcon />
@@ -178,12 +208,14 @@ const Articlenav = () => {
                     </Box>
 
                     <List
-                        sx={{ bgcolor: 'background.paper', border: "1px solid blue", color: "blue", borderRadius: 6, padding: "0.005px" }}
+                        sx={{ color: "#02367B", margin: "15px", border: "2px solid #02367B", borderRadius: 6, padding: "0.005px" }}
                     >
                         <ListItem
+                            button
                             id="lock-button"
-                            // aria-haspopup="listbox"
+                            aria-haspopup="listbox"
                             aria-expanded={openM ? 'true' : undefined}
+                            style={{ borderRadius: 15 }}
                             onClick={handleClickListItemM}
                         >
                             <ListItemText
@@ -212,7 +244,14 @@ const Articlenav = () => {
                             </MenuItem>
                         ))}
                     </Menu>
-                    <Button bgcolor="blue" sx={{ bgcolor: "background.paper", color: "blue", borderRadius: 6 }}>Next<ArrowForwardIcon /></Button>
+
+                    <ColorButton
+                        variant="contained"
+                        endIcon={<ArrowForwardIcon />}
+                        style={{ borderRadius: 6 }}
+                    >
+                        Next
+                    </ColorButton>
                 </nav>
             </header>
         </div>
