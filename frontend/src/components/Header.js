@@ -26,7 +26,7 @@ const Header = () => {
   const logoutuser = async () => {
 
     //getting value of token
-    let token = localStorage.getItem("userdatatoken");
+    let token = localStorage.getItem("usersdatatoken");
 
     //calling API
     const res = await fetch("/logout", {
@@ -45,7 +45,7 @@ const Header = () => {
     if (data.status === 201) {
       //delete token form local storage.
       console.log("user Logout")
-      localStorage.removeItem("userdatatoken");
+      localStorage.removeItem("usersdatatoken");
       setLoginData(false);
       history("/");
     } else {

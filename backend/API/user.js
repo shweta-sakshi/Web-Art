@@ -1,8 +1,8 @@
 const express = require('express');
-const router = new express.Router();
-const authenticate = require("../middleware/authenticate");
 const Post = require("../models/postSchema");
 const user = require("../models/userSchema");
+const router = new express.Router();
+const authenticate = require("../middleware/authenticate");
 
 //To see other user Post.
 router.get("/user/:id", authenticate, async (req, res) => {

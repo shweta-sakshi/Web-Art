@@ -2,14 +2,14 @@ const jwt = require("jsonwebtoken");
 const usrdb = require("../models/userSchema");
 const keySecret = "codadaserrkljhoidfbnxcjhashkzxto"
 
-const authenticate = async(req,res,next)=>{
-    try{
+const authenticate = async (req, res, next) => {
+    try {
         const token = req.headers.authorization;
         const verifytoken = jwt.verify(token, keySecret);
 
-        const rootUser = await usrdb.findOne({_id:verifytoken._id});
+        const rootUser = await usrdb.findOne({ _id: verifytoken._id });
 
-        if(!rootUser){
+        if (!rootUser) {
             throw new Error("user not found")
         }
 
@@ -19,8 +19,8 @@ const authenticate = async(req,res,next)=>{
 
         next();
 
-    }catch (err) {
-        res.status(401).json({status:401,message:"Unauthorized no token provided"});
+    } catch (err) {
+        res.status(401).json({ status: 401, message: "Unauthorized no token provided" });
     }
 }
 

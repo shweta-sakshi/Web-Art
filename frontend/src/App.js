@@ -4,6 +4,7 @@ import Register from "./components/register.js";
 import Dashboard from "./components/Dashboard.js";
 import Post from "./components/Post.js";
 import Article from "./components/Article.js";
+import User from "./components/Profile.js";
 import Error from "./components/error.js";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -21,9 +22,9 @@ function App() {
 
   const DashboardValid = async () => {
     //getting value of token
-    let token = localStorage.getItem("userdatatoken");
+    let token = localStorage.getItem("usersdatatoken");
 
-    //calling API
+    //calling validate API
     const res = await fetch("/validuser", {
       method: "GET",
       headers:
@@ -35,9 +36,10 @@ function App() {
 
     const data = await res.json();
 
-    if (data.status === 401 || !data) {
+    if (data.status == 401 || !data) {
       console.log("User not valid");
     } else {
+      console.log("user verify");
       setLoginData(data);
       history("/dash");
     }
@@ -63,6 +65,7 @@ function App() {
               <Route path='/article' element={<Article />} />
               <Route path='/dash' element={<Dashboard />} />
               <Route path='/createpost' element={<Post />} />
+              <Route path='/profile' element={<User />} />
               <Route path='*' element={<Error />} />
             </Routes>
           </>

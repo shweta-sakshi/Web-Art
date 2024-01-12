@@ -1,6 +1,6 @@
 const express = require('express');
+const Users = require("../models/userSchema");
 const router = new express.Router();
-const usrdb = require("../models/userSchema");
 const bcrypt = require("bcryptjs");
 const authenticate = require("../middleware/authenticate");
 
@@ -12,7 +12,7 @@ router.post("/register", async (req, res) => {
 
     if (!fname || !email || !password || !cpassword) {
         console.log("fill all the details");
-        res.stataus(422).json({ error: "fill all the details" });
+        res.status(422).json({ error: "fill all the details" });
     }
 
     try {
@@ -41,7 +41,7 @@ router.post("/register", async (req, res) => {
 
     } catch (err) {
         res.status(422).json(err);
-        console.log("catch error while registre");
+        console.log("catch error while register");
     }
 });
 
@@ -56,7 +56,8 @@ router.post("/login", async (req, res) => {
     }
 
     try {
-        const userValid = await usrdb.findOne({ email: email });
+        //changed
+        const userValid = await Users.findOne({ email: email });
 
         if (userValid) {
 
@@ -89,14 +90,14 @@ router.post("/login", async (req, res) => {
         }
     } catch (err) {
         res.status(401).json(err);
-        console.log("catch error while login");
+        console.log(err);
     }
 })
 
 //user valid
 router.get("/validuser", authenticate, async (req, res) => {
     try {
-        const ValidUserOne = await usrdb.findOne({ _id: req.userId });
+        const ValidUserOne = await Users.findOne({ _id: req.userId });
         res.status(201).json({ status: 201, ValidUserOne });
     } catch (err) {
         //console.log("err");

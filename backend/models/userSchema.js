@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const keySecret = "codadaserrkljhoidfbnxcjhashkzxto";
 
 //Schema:
-const userSchema = new mongoose.Schema({
+const User = new mongoose.Schema({
    fname: {
       type: String,
       required: true,
@@ -55,7 +55,7 @@ const userSchema = new mongoose.Schema({
 
 
 //password hashing
-userSchema.pre("save", async function (next) {
+User.pre("save", async function (next) {
 
    if (this.isModified("password")) {
       this.password = await bcrypt.hash(this.password, 12);
@@ -67,7 +67,7 @@ userSchema.pre("save", async function (next) {
 
 
 //Token generator
-userSchema.methods.generateAuthtoken = async function () {/* add generateAuthtoken method to usrSchema */
+User.methods.generateAuthtoken = async function () {/* add generateAuthtoken method to usrSchema */
    try {
       //create JWT for authentication
       let token1 = jwt.sign({ _id: this._id }, keySecret, {
@@ -86,7 +86,7 @@ userSchema.methods.generateAuthtoken = async function () {/* add generateAuthtok
 }
 
 
-//creating model in collection Called User using userSchema and store it in usrdb variable
-const usrdb = new mongoose.model("Users", userSchema);
+//creating model in collection Called User using User and store it in usrdb variable
+const usrdb = new mongoose.model("Users", User);
 
 module.exports = usrdb;

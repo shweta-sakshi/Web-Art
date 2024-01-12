@@ -1,10 +1,10 @@
 const express = require('express');
-const router = new express.Router();
 const Post = require("../models/postSchema");
+const router = new express.Router();
 const authenticate = require("../middleware/authenticate");
 
 //to get all the posts of user.
-router.get("/allPost", (req, res) => {
+router.get("/allPost", authenticate, (req, res) => {
     Post.find()
         //to expand the postedBy field in post and fetch the mentioned or all the info inside.
         .populate("postedBy", "_id fname email")
@@ -18,7 +18,7 @@ router.get("/allPost", (req, res) => {
 })
 
 //get post of followed user.
-router.get("/allPost", (req, res) => {
+router.get("/allPostfolow", authenticate, (req, res) => {
     //if postedBy is in the following list then return that post.
     Post.find({ postedBy: { $in: req.user.following } })
         //to expand the postedBy field in post and fetch the mentioned or all the info inside.
