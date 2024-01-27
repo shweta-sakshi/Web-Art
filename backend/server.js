@@ -8,7 +8,8 @@ const user = require('./API/user');
 const chat = require('./API/chat');
 const msg = require('./API/message');
 const cookieParser = require("cookie-parser");
-const port = 8000;
+
+const port = process.env.PORT
 
 // app.get("/", (req, res) => {
 //     res.status(201).json('server created');

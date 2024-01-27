@@ -51,8 +51,9 @@ router.post("/createpost", authenticate, async (req, res) => {
         post.postedBy.cpassword = undefined;
         post.postedBy.tokens = undefined;
         post.postedBy.__v = undefined;
+
         const userPost = await post.save();
-        res.status(201).json({ "post": userPost });
+        res.status(201).json({ status: 201, message: "post is saved successfully" });
 
     } catch (err) {
         console.log(err);

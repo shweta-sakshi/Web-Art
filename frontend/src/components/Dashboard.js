@@ -2,15 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LoginContext } from './contexProvider/Context';
 import "./Dashboard.css";
-//Material UI.
+//Material-UI component.
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
 import ImageIcon from '@mui/icons-material/Image';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ArticleIcon from '@mui/icons-material/Article';
-//for Post Card.
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -20,21 +18,13 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-// //download.
 import DownloadIcon from '@mui/icons-material/Download';
-//for media
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
 import Divider from '@mui/material/Divider';
-//for post:
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -42,7 +32,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContentText from '@mui/material/DialogContentText';
 import CloseIcon from '@mui/icons-material/Close';
 import CameraEnhanceIcon from '@mui/icons-material/CameraEnhance';
-//for event
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -57,7 +46,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
-import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+// import validator from 'validator'
 
 //post.
 const ExpandMore = styled((props) => {
@@ -70,22 +62,6 @@ const ExpandMore = styled((props) => {
         duration: theme.transitions.duration.shortest,
     }),
 }));
-
-//Media
-//for steps.
-const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 800,
-    bgcolor: 'lightblue',
-    border: 'none',
-    boxShadow: 24,
-    p: 18,
-};
 
 //for upload styling
 const VisuallyHiddenInput = styled('input')({
@@ -247,7 +223,6 @@ const Dashboard = () => {
             }
         }).then(res => res.json())
             .then(result => {
-                console.log(result)
                 setCard(result.posts)
             })
     }, [])
@@ -311,58 +286,95 @@ const Dashboard = () => {
         }, 2000);
     }, []);
 
-
-
     // For Media.
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [inpval, setInpval] = React.useState({
+        title: "",
+        body: "",
+        photo: ""
+    });
 
-    //for step.
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [skipped, setSkipped] = React.useState(new Set());
+    const setVal = (e) => {
+        console.log(e.target.value);
+        const { name, value } = e.target;
 
-    const isStepOptional = (step) => {
-        return step === 1;
+        setInpval(() => {
+            return {
+                ...inpval,
+                [name]: value
+            }
+        })
     };
 
-    const isStepSkipped = (step) => {
-        return skipped.has(step);
-    };
+    const Posting = async (e) => {
+        e.preventDefault();
 
-    const handleNext = () => {
-        let newSkipped = skipped;
-        if (isStepSkipped(activeStep)) {
-            newSkipped = new Set(newSkipped.values());
-            newSkipped.delete(activeStep);
+        const { title, body, photo } = inpval;
+
+        console.log(inpval)
+        const picBase64 = await convertToBase64(photo)
+        console.log(picBase64);
+
+        if (title === "") {
+            toast.error("Title is required!", {
+                position: "top-center"
+            });
+        } else if (body === "") {
+            toast.warning("Descibe your Title a little bit!", {
+                position: "top-center"
+            });
+        } else {
+
+            //getting value of token as createPost require authentication.
+            let token = localStorage.getItem("usersdatatoken");
+
+            const postData = await fetch("/createpost", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": token
+                },
+                body: JSON.stringify({
+                    title, body, photo
+                })
+            });
+
+            const postRes = await postData.json();
+            console.log(postRes.status);
+            console.log(postRes);
+            if (postRes.status === 201) {
+                toast.success("Post Created (❁´◡`❁)😊", {
+                    position: "top-center"
+                });
+                setInpval({ ...inpval, title: "", body: "", photo: "" });
+            } else if (postRes.status === 422) {
+                toast.error("Try again with all the details!!", {
+                    position: "top-center"
+                });
+            } else {
+                toast.error("try again!!!", {
+                    position: "top-center"
+                });
+            }
         }
+    }
 
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setSkipped(newSkipped);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const handleSkip = () => {
-        if (!isStepOptional(activeStep)) {
-            // You probably want to guard against something like this,
-            // it should never occur unless someone's actively trying to break something.
-            throw new Error("You can't skip a step that isn't optional.");
-        }
-
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setSkipped((prevSkipped) => {
-            const newSkipped = new Set(prevSkipped.values());
-            newSkipped.add(activeStep);
-            return newSkipped;
-        });
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
-    };
+    //convert img to base64
+    function convertToBase64(file) {
+        return new Promise((resolve, reject) => {
+            console.log(file);
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                resolve(fileReader.result)
+            };
+            fileReader.onerror = (error) => {
+                reject(error)
+            }
+        })
+    }
 
     //event start
     const [openevent, setOpenevent] = React.useState(false);
@@ -412,7 +424,7 @@ const Dashboard = () => {
                             bgcolor: "rgb(239, 236, 233)"
                         }}>
                             <div className="user-info">
-                                <img src="https://cdn-icons-png.flaticon.com/128/7009/7009609.png?ga=GA1.1.2046960427.1678348423&track=ais"
+                                <img src={logindata.ValidUserOne.pic}
                                     alt="User Profile" className="user-profile-picture" onClick={() => { }} />
                                 <React.Fragment>
                                     <Button style={{ borderRadius: 22, maxWidth: "580px", padding: "10px", color: "#808080", textDecorationColor: "black", border: "1px solid #808080" }} fullWidth variant="outlined" onClick={handleClickOpenp}>
@@ -421,6 +433,7 @@ const Dashboard = () => {
                                     {/* dialog content */}
                                     <BootstrapDialog
                                         onClose={handleClosep}
+
                                         aria-labelledby="customized-dialog-title"
                                         open={openp}
                                     >
@@ -467,83 +480,90 @@ const Dashboard = () => {
 
                             <div className="post-interactions">
                                 <div className="interaction-option">
-                                    <IconButton aria-label="Media" onClick={handleOpen}>
+                                    <IconButton aria-label="Media" style={{ borderRadius: 6 }} onClick={handleOpen} >
                                         <ImageIcon sx={{ color: "blue" }} />
+                                        <h6>Media</h6>
                                     </IconButton>
-                                    <small>Media</small>
 
                                     {/* onclick open media */}
-                                    <Modal
-                                        open={open}
-                                        onClose={handleClose}
-                                        aria-labelledby="modal-modal-title"
-                                        aria-describedby="modal-modal-description"
-                                    >
-                                        <Box sx={style}>
-                                            <Stepper activeStep={activeStep}>
-                                                {steps.map((label, index) => {
-                                                    const stepProps = {};
-                                                    const labelProps = {};
-                                                    if (isStepOptional(index)) {
-                                                        labelProps.optional = (
-                                                            <Typography variant="caption">Optional</Typography>
-                                                        );
-                                                    }
-                                                    if (isStepSkipped(index)) {
-                                                        stepProps.completed = false;
-                                                    }
-                                                    return (
-                                                        <Step key={label} {...stepProps}>
-                                                            <StepLabel {...labelProps}>{label}</StepLabel>
-                                                        </Step>
-                                                    );
-                                                })}
-                                            </Stepper>
-                                            {activeStep === steps.length ? (
-                                                <React.Fragment>
-                                                    <Typography sx={{ mt: 2, mb: 1 }}>
-                                                        All steps completed - you&apos;re finished
-                                                    </Typography>
-                                                    <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                                                        <Box sx={{ flex: '1 1 auto' }} />
-                                                        <Button onClick={handleReset}>Reset</Button>
-                                                    </Box>
-                                                </React.Fragment>
-                                            ) : (
-                                                <React.Fragment>
-                                                    <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
-                                                    <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                                                        <Button
-                                                            color="inherit"
-                                                            disabled={activeStep === 0}
-                                                            onClick={handleBack}
-                                                            sx={{ mr: 1 }}
-                                                        >
-                                                            Back
-                                                        </Button>
-                                                        <Box sx={{ flex: '1 1 auto' }} />
-                                                        {isStepOptional(activeStep) && (
-                                                            <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                                                                Skip
-                                                            </Button>
-                                                        )}
-
-                                                        <Button onClick={handleNext}>
-                                                            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                                                        </Button>
-                                                    </Box>
-                                                </React.Fragment>
-                                            )}
-                                        </Box>
-                                    </Modal>
+                                    <React.Fragment>
+                                        <BootstrapDialog
+                                            onClose={handleClose}
+                                            aria-labelledby="customized-dialog-title"
+                                            open={open}
+                                        >
+                                            <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+                                                Editor
+                                            </DialogTitle>
+                                            <IconButton
+                                                aria-label="close"
+                                                onClick={handleClose}
+                                                sx={{
+                                                    position: 'absolute',
+                                                    right: 8,
+                                                    top: 8,
+                                                    color: (theme) => theme.palette.grey[500],
+                                                }}
+                                            >
+                                                <CloseIcon />
+                                            </IconButton>
+                                            <DialogContent dividers>
+                                                <FormControl defaultValue="" required>
+                                                    <Label>Title*</Label>
+                                                    <StyledInput name="title" value={inpval.title} onChange={setVal} />
+                                                    <HelperText />
+                                                </FormControl>
+                                                <FormControl defaultValue="" required>
+                                                    <Label>Body*</Label>
+                                                    <StyledInput name="body" value={inpval.body} onChange={setVal} />
+                                                    <HelperText />
+                                                </FormControl>
+                                                {/* have to change to upload from device */}
+                                                <FormControl defaultValue="" >
+                                                    <input
+                                                        type="file"
+                                                        lable="Image"
+                                                        value={inpval.photo}
+                                                        name="photo"
+                                                        accept='.jpeg, .png, .jpg'
+                                                        onChange={setVal}
+                                                    />
+                                                    {/* <Button
+                                                        name="photo"
+                                                        type="file"
+                                                        lable="Image"
+                                                        id='file-upload'
+                                                        accept='.jpeg, .png, .jpg'
+                                                        value={inpval.photo}
+                                                        onChange={setVal} style={{ color: '#808080', border: '1px solid #808080', borderRadius: 16 }}
+                                                        component="label"
+                                                        variant="outlined"
+                                                        startIcon={<FileUploadIcon />}
+                                                    >
+                                                        Upload From Computer
+                                                        <VisuallyHiddenInput type="file" />
+                                                    </Button> */}
+                                                    {/* <Label>Image link</Label>
+                                                    <StyledInput name="photo" value={inpval.photo} onChange={setVal} />
+                                                    <HelperText /> */}
+                                                </FormControl>
+                                            </DialogContent>
+                                            <DialogActions>
+                                                <Button variant="contained" onClick={Posting}>
+                                                    Post
+                                                </Button>
+                                            </DialogActions>
+                                        </BootstrapDialog>
+                                    </React.Fragment>
+                                    <ToastContainer />
                                     {/*media dialog end  */}
-
                                 </div>
                                 <div className="interaction-option">
-                                    <IconButton onClick={handleClickOpenevent('paper')}>
+                                    <IconButton style={{ borderRadius: 6 }} onClick={handleClickOpenevent('paper')}>
                                         <CalendarMonthIcon sx={{ color: "olive" }} />
+                                        <h6>Event</h6>
                                     </IconButton>
-                                    <small>Event</small>
+
 
                                     {/* onclick open Event */}
                                     <React.Fragment>
@@ -612,7 +632,7 @@ const Dashboard = () => {
                                                                         <StyledInput fullWidth />
                                                                         <HelperText />
                                                                     </FormControl>
-                                                                    {/* Time and daate picker */}
+                                                                    {/* Time and date picker */}
                                                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                                                         <DemoItem label="Mobile variant">
                                                                             <MobileDateTimePicker defaultValue={dayjs('2022-04-17T15:30')} />
@@ -648,10 +668,11 @@ const Dashboard = () => {
                                     {/* event dialog end */}
                                 </div>
                                 <div className="interaction-option">
-                                    <IconButton onClick={openArticle}>
+                                    <IconButton style={{ borderRadius: 6 }} onClick={openArticle}>
                                         <ArticleIcon sx={{ color: "orange" }} />
+                                        <h6>Write article</h6>
                                     </IconButton>
-                                    <small>Write article</small>
+
                                 </div>
                             </div>
                         </div>
@@ -664,8 +685,8 @@ const Dashboard = () => {
                                     < Card sx={{ marginLeft: "30.2%", marginTop: "23px", maxWidth: 600 }}>
                                         <CardHeader
                                             avatar={
-                                                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                                                    {item.postedBy.fname[0].toUpperCase()}
+                                                <Avatar >
+                                                    {item.postedBy.pic}
                                                 </Avatar>
                                             }
                                             action={
@@ -685,7 +706,8 @@ const Dashboard = () => {
                                         <CardMedia
                                             component="img"
                                             image={item.photo}
-                                            alt="Paella-dish"
+                                            alt="image related to topic "
+                                            sx={{ maxHeight: 600 }}
                                         />
                                         <CardContent>
                                             <Typography variant="body2" color="text.secondary">

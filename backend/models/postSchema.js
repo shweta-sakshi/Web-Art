@@ -12,8 +12,8 @@ const postSchema = new mongoose.Schema({
     },
     photo: {
         type: String,
-        default: "pic",
-        //required:true
+        default: "https://www.detailoriented.org/wp-content/uploads/2014/05/do-logo-small-low-res-v.png",
+        required: true
     },
     likes: [{ type: ObjectId, ref: "Users" }],
     comments: [{
