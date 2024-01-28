@@ -5,7 +5,7 @@ const { ObjectId } = mongoose.Schema.Types
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const keySecret = "codadaserrkljhoidfbnxcjhashkzxto";
+const keySecret = process.env.SECRETKEY;
 
 //Schema:
 const User = new mongoose.Schema({

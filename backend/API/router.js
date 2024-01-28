@@ -19,7 +19,7 @@ router.post("/register", async (req, res) => {
 
         //we are cheking if email entered by user is already in database or not.
         //registretion will be done only for new users
-        const preuser = await usrdb.findOne({/* database */email: email });
+        const preuser = await Users.findOne({/* database */email: email });
 
         if (preuser) {
             //console.log("user already exist");
@@ -27,7 +27,7 @@ router.post("/register", async (req, res) => {
         } else if (password != cpassword) {
             res.status(422).json({ error: "Confirm password doesn't match" });
         } else {
-            const finalUser = new usrdb({
+            const finalUser = new Users({
                 fname, email, password, cpassword
             });
 
@@ -41,7 +41,7 @@ router.post("/register", async (req, res) => {
 
     } catch (err) {
         res.status(422).json(err);
-        console.log("catch error while register");
+        console.log(err);
     }
 });
 

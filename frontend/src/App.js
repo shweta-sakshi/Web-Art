@@ -37,7 +37,7 @@ function App() {
     const data = await res.json();
 
     if (data.status == 401 || !data) {
-      console.log("User not valid");
+      console.log("User not loggedIn");
     } else {
       console.log("user verify");
       setLoginData(data);
