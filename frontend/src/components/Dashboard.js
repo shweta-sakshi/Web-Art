@@ -48,8 +48,6 @@ import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import FileUploadIcon from '@mui/icons-material/FileUpload';
-// import validator from 'validator'
 
 //post.
 const ExpandMore = styled((props) => {
@@ -293,11 +291,10 @@ const Dashboard = () => {
     const [inpval, setInpval] = React.useState({
         title: "",
         body: "",
-        photo: ""
     });
+    const [photofile, setPhoto] = useState(null);
 
     const setVal = (e) => {
-        console.log(e.target.value);
         const { name, value } = e.target;
 
         setInpval(() => {
@@ -308,14 +305,21 @@ const Dashboard = () => {
         })
     };
 
+    const handleFileChange = (e) => {
+        setPhoto(e.target.files[0]);
+    };
+
     const Posting = async (e) => {
         e.preventDefault();
 
-        const { title, body, photo } = inpval;
+        const { title, body } = inpval;
+        const file = photofile
 
-        console.log(inpval)
-        const picBase64 = await convertToBase64(photo)
-        console.log(picBase64);
+        //for file we should use formdata
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("body", body);
+        formData.append("file", file);
 
         if (title === "") {
             toast.error("Title is required!", {
@@ -333,47 +337,30 @@ const Dashboard = () => {
             const postData = await fetch("/createpost", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
                     "authorization": token
                 },
-                body: JSON.stringify({
-                    title, body, photo
-                })
+                body: formData
             });
 
             const postRes = await postData.json();
-            console.log(postRes.status);
-            console.log(postRes);
             if (postRes.status === 201) {
                 toast.success("Post Created (❁´◡`❁)😊", {
                     position: "top-center"
                 });
                 setInpval({ ...inpval, title: "", body: "", photo: "" });
+                handleClose()
             } else if (postRes.status === 422) {
                 toast.error("Try again with all the details!!", {
                     position: "top-center"
                 });
+                setInpval({ ...inpval, title: "", body: "", photo: "" });
             } else {
                 toast.error("try again!!!", {
                     position: "top-center"
                 });
+                setInpval({ ...inpval, title: "", body: "", photo: "" });
             }
         }
-    }
-
-    //convert img to base64
-    function convertToBase64(file) {
-        return new Promise((resolve, reject) => {
-            console.log(file);
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(file);
-            fileReader.onload = () => {
-                resolve(fileReader.result)
-            };
-            fileReader.onerror = (error) => {
-                reject(error)
-            }
-        })
     }
 
     //event start
@@ -495,6 +482,7 @@ const Dashboard = () => {
                                             <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
                                                 Editor
                                             </DialogTitle>
+                                            {/* for close button on media dialogbox */}
                                             <IconButton
                                                 aria-label="close"
                                                 onClick={handleClose}
@@ -508,45 +496,18 @@ const Dashboard = () => {
                                                 <CloseIcon />
                                             </IconButton>
                                             <DialogContent dividers>
-                                                <FormControl defaultValue="" required>
+                                                <FormControl defaultValue="Title" required>
                                                     <Label>Title*</Label>
                                                     <StyledInput name="title" value={inpval.title} onChange={setVal} />
                                                     <HelperText />
                                                 </FormControl>
-                                                <FormControl defaultValue="" required>
+                                                <FormControl defaultValue="describe your title to inform more about it.." required>
                                                     <Label>Body*</Label>
                                                     <StyledInput name="body" value={inpval.body} onChange={setVal} />
                                                     <HelperText />
                                                 </FormControl>
                                                 {/* have to change to upload from device */}
-                                                <FormControl defaultValue="" >
-                                                    <input
-                                                        type="file"
-                                                        lable="Image"
-                                                        value={inpval.photo}
-                                                        name="photo"
-                                                        accept='.jpeg, .png, .jpg'
-                                                        onChange={setVal}
-                                                    />
-                                                    {/* <Button
-                                                        name="photo"
-                                                        type="file"
-                                                        lable="Image"
-                                                        id='file-upload'
-                                                        accept='.jpeg, .png, .jpg'
-                                                        value={inpval.photo}
-                                                        onChange={setVal} style={{ color: '#808080', border: '1px solid #808080', borderRadius: 16 }}
-                                                        component="label"
-                                                        variant="outlined"
-                                                        startIcon={<FileUploadIcon />}
-                                                    >
-                                                        Upload From Computer
-                                                        <VisuallyHiddenInput type="file" />
-                                                    </Button> */}
-                                                    {/* <Label>Image link</Label>
-                                                    <StyledInput name="photo" value={inpval.photo} onChange={setVal} />
-                                                    <HelperText /> */}
-                                                </FormControl>
+                                                <input type="file" accept="image/*" onChange={handleFileChange} />
                                             </DialogContent>
                                             <DialogActions>
                                                 <Button variant="contained" onClick={Posting}>

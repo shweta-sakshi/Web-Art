@@ -2,6 +2,8 @@ const express = require('express');
 const Post = require("../models/postSchema");
 const router = new express.Router();
 const authenticate = require("../middleware/authenticate");
+const uploadOnCloudinary = require("../utils/Cloudinary.js");
+const upload = require("../middleware/fileuploadmulter.js");
 
 //to get all the posts of user.
 router.get("/allPost", authenticate, (req, res) => {
@@ -33,17 +35,27 @@ router.get("/allPostfolow", authenticate, (req, res) => {
 })
 
 //to create user post.
-router.post("/createpost", authenticate, async (req, res) => {
-    const { title, body, photo } = req.body;
+router.post("/createpost", authenticate, upload.single("file"), async (req, res) => {
+    const { title, body } = req.body;
+
+    let cloudinaryResponse = null;
 
     if (!title || !body) {
         return res.status(422).json({ error: "Title and body required" });
     }
 
     try {
+        // Check if file was uploaded and use the local file path
+        if (req.file) {
+            const localFilePath = req.file.path;
+            // Upload the local file to Cloudinary
+
+            cloudinaryResponse = await uploadOnCloudinary(localFilePath);
+        }
 
         const post = new Post({
-            title, body, photo,
+            title, body,
+            photo: cloudinaryResponse ? cloudinaryResponse.url : "",//cloud url
             postedBy: req.rootUser
         })
 
@@ -52,24 +64,17 @@ router.post("/createpost", authenticate, async (req, res) => {
         post.postedBy.tokens = undefined;
         post.postedBy.__v = undefined;
 
+        //save the post.
         const userPost = await post.save();
+
+        //send success response.
         res.status(201).json({ status: 201, message: "post is saved successfully" });
 
+        //send error response.
     } catch (err) {
+        res.status(400).json({ status: 400, message: "Error while uploading the files" });
         console.log(err);
     }
-})
-
-//this is user specific.
-router.get("/mypost", authenticate, (req, res) => {
-    Post.find({ postedBy: req.rootUser._id })
-        .populate("postedBy", "_id fname email")
-        .then(mypost => {
-            res.json({ mypost })
-        })
-        .catch(err => {
-            console.log(err);
-        })
 })
 
 //like post. 
