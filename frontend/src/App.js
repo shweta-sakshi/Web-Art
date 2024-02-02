@@ -6,6 +6,7 @@ import Post from "./components/Post.js";
 import Article from "./components/Article.js";
 import User from "./components/Profile.js";
 import Error from "./components/error.js";
+import Landingpage from './components/Landingpage.js';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -60,7 +61,8 @@ function App() {
             <Header />
 
             <Routes>
-              <Route path='/' element={<Login />} />
+              <Route path='/' element={<Landingpage />} />
+              <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/article' element={<Article />} />
               <Route path='/dash' element={<Dashboard />} />
