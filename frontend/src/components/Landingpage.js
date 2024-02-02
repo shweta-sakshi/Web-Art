@@ -80,7 +80,7 @@ const Landingpage = () => {
                     <div className="p-5 text-center bg-body-tertiary">
                         <div className="container pt-5">
                             <h2 className="text-body-emphasis pb-5">"Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work." </h2>
-                            <img className="dog-img" src={manlogo} alt="dog picture" height="150px" />
+                            <img className="dog-img" src={manlogo} alt="manlogo" height="150px" />
                         </div>
                     </div>
                 </div>
